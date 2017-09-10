@@ -36,15 +36,15 @@ public class MergeList
 		return fileList;    
 	}
 	
-	public Map<Integer,Map<Integer,Integer> > makeMap(String postingList)
+	public Map<Integer,Map<Integer,Object> > makeMap(String postingList)
 	{
-		Map<Integer,Map<Integer,Integer> > postingMap=new TreeMap<Integer,Map<Integer,Integer> >();
+		Map<Integer,Map<Integer,Object> > postingMap=new TreeMap<Integer,Map<Integer,Object> >();
 		String docs[]=postingList.split(";");
 		for(String doc:docs)
 		{
 			String token[]=doc.split("#");
 			String terms[]=token[1].split(",");
-			Map<Integer,Integer> termMap=new TreeMap<Integer,Integer>();
+			Map<Integer,Object> termMap=new TreeMap<Integer,Object>();
 			for(String term:terms)
 			{
 				String part[]=term.split("$");
@@ -55,9 +55,9 @@ public class MergeList
 		return postingMap;
 	}
 	
-	public Map<Integer,Map<Integer,Integer> > mergeMap(Map<Integer,Map<Integer,Integer> > a,Map<Integer,Map<Integer,Integer> > b)
+	public Map<Integer,Map<Integer,Object> > mergeMap(Map<Integer,Map<Integer,Object> > a,Map<Integer,Map<Integer,Object> > b)
 	{
-		for(Map.Entry<Integer,Map<Integer,Integer> > entry:a.entrySet())
+		for(Map.Entry<Integer,Map<Integer,Object> > entry:a.entrySet())
 		{
 			/*if(b.containsKey(entry.getKey()))
 			{
@@ -111,12 +111,12 @@ public class MergeList
 			for(int i=0;i<bf.length;i++)
 				addPriorityQueue(bf[i], i);
 			x=0;
-			bw=new BufferedWriter(new FileWriter(new File(indexPath+"/L"+pageCount+".txt")));
+			bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A"+pageCount+".txt")));
 			while(!pq.isEmpty())
 			{
 				WordNode temp=pq.poll();
 				addPriorityQueue(bf[temp.getIndex()], temp.getIndex());
-				Map<Integer,Map<Integer,Integer> > postingMap=makeMap(temp.getPostingString());
+				Map<Integer,Map<Integer,Object> > postingMap=makeMap(temp.getPostingString());
 				while(temp.getWord().equalsIgnoreCase(pq.peek().getWord()))
 				{
 					WordNode t=pq.poll();
@@ -141,16 +141,16 @@ public class MergeList
 		}
 	}
 	
-	public void writeToFile(String word,Map<Integer,Map<Integer,Integer> > postingMap,BufferedWriter bw)
+	public void writeToFile(String word,Map<Integer,Map<Integer,Object> > postingMap,BufferedWriter bw)
 	{
 		try
 		{
 			StringBuilder sb=new StringBuilder();
 	    	sb.append(word+":");
-	    	for(Map.Entry<Integer,Map<Integer,Integer> > en:postingMap.entrySet())
+	    	for(Map.Entry<Integer,Map<Integer,Object> > en:postingMap.entrySet())
 	    	{
 	    		sb.append(en.getKey()+"#");
-	    		for(Map.Entry<Integer, Integer> e:en.getValue().entrySet())
+	    		for(Map.Entry<Integer, Object> e:en.getValue().entrySet())
 	    		{
 	    			sb.append(e.getKey()+"$"+e.getValue()+",");
 	    		}

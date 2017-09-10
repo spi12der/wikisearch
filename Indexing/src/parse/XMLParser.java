@@ -43,6 +43,8 @@ public class XMLParser
 				{
 			         title = attributes.getValue("title");
 			         pageId++;
+			         if(pageId%80==0)
+			        	 WriteDict.writeDictToFile();
 			    }
 				if (qName.equalsIgnoreCase("text")) {
 					text = true;
@@ -66,22 +68,7 @@ public class XMLParser
 		      	{
 		      		String[] words = content.split("[^a-zA-Z]");
 					for (String oneWord : words) 
-					{
-						String stemmedText = null;
-						if (oneWord != "\n" && oneWord != " " && oneWord != "\t" && oneWord != "\r" && oneWord != null
-								&& !oneWord.isEmpty() && oneWord.length()>2) {
-							try
-							{
-								stemmedText=porterObj.stem(oneWord.toLowerCase());
-								if(!StopWordsRemover.stopWordSet.contains(stemmedText))
-									Indexing.updateIndexTable(stemmedText, pageId,2);
-							}
-							catch (StringIndexOutOfBoundsException e) 
-							{
-								//System.out.println("Exceptional word :"+oneWord);
-							}
-						}
-					}
+						addToDictionary(oneWord, 2);
 		      		text=false;
 		      		title = "";
 		      	}
@@ -96,5 +83,39 @@ public class XMLParser
 		catch (Exception e) {
 			e.printStackTrace();
 	    }
+	}
+	
+	public void addToDictionary(String word,int category)
+	{
+		String stemmedText = null;
+		if (word != "\n" && word != " " && word != "\t" && word != "\r" && word != null
+				&& !word.isEmpty() && word.length()>2) 
+		{
+			try
+			{
+				stemmedText=porterObj.stem(word.toLowerCase());
+				if(!StopWordsRemover.stopWordSet.contains(stemmedText))
+				{
+					long count=0;
+					double size=Indexing.docMap.get(pageId);
+					if(Indexing.indexTable.containsKey(stemmedText) && 
+							Indexing.indexTable.get(stemmedText).containsKey(pageId))
+					{
+						count=(long)Indexing.indexTable.get(stemmedText).get(pageId).get(1);
+						size-=(count*count);
+						
+					}
+					count++;
+					size+=(count*count);
+					Indexing.docMap.put(pageId, size);
+					Indexing.indexTable.get(stemmedText).get(pageId).put(1, count);
+					Indexing.updateIndexTable(stemmedText, pageId,category);
+				}	
+			}
+			catch (StringIndexOutOfBoundsException e) 
+			{
+				//System.out.println("Exceptional word :"+oneWord);
+			}
+		}
 	}
 }
