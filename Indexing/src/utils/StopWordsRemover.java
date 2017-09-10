@@ -4,7 +4,6 @@
 package utils;
 
 import java.util.HashSet;
-import java.util.Map;
 
 
 public class StopWordsRemover {
@@ -61,15 +60,4 @@ public class StopWordsRemover {
 		for (String stpWord : stopWords) 
 			stopWordSet.add(stpWord);
 	}
-	
-	public static Map<String,Map<Integer,Integer> > removeStopWords(Map<String,Map<Integer,Integer> > indexTable)
-	{
-		for(String word:stopWords)
-		{
-			if(indexTable.containsKey(word))
-				indexTable.remove(word);
-		}	
-		return indexTable;
-	}
-
 }

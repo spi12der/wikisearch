@@ -10,6 +10,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.Indexing;
 
 import utils.PorterStemmer;
+import utils.StopWordsRemover;
 
 public class XMLParser 
 {
@@ -72,7 +73,8 @@ public class XMLParser
 							try
 							{
 								stemmedText=porterObj.stem(oneWord.toLowerCase());
-								Indexing.updateIndexTable(stemmedText, pageId);
+								if(!StopWordsRemover.stopWordSet.contains(stemmedText))
+									Indexing.updateIndexTable(stemmedText, pageId,2);
 							}
 							catch (StringIndexOutOfBoundsException e) 
 							{
