@@ -14,6 +14,7 @@ public class Indexing
 	static
 	{
 		indexTable=new TreeMap<String,Map<Integer,Map<Integer,Object> > >();
+		docMap=new TreeMap<Integer,Double>();
 	}
 	
 	public static void main(String[] args) 
@@ -24,64 +25,24 @@ public class Indexing
 		String indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 		/*String src=args[0];
 		String des=args[1];*/
-		XMLParser obj=new XMLParser();
-		obj.parse(src);
-		//printIndex();
-		//saveToFile(des);
-		MergeList ml=new MergeList();
-		ml.mergeIndexes(WriteDict.folderPath, indexPath);
-		System.out.println("Word Count "+indexTable.size());
+		try
+		{
+			XMLParser obj=new XMLParser();
+			obj.parse(src);
+			WriteDict.writeDictToFile();
+			//printIndex();
+			//saveToFile(des);
+			MergeList ml=new MergeList();
+			ml.mergeIndexes(WriteDict.folderPath, indexPath);
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 		System.out.println("Page Count "+XMLParser.pageId);
 		long end=System.currentTimeMillis();
 		System.out.println((end-start)/1000 + "sec");
 	}
-	
-	/*public static void saveToFile(String des)
-	{
-		BufferedWriter bw = null;
-		FileWriter fw = null;
-        try 
-		{
-			fw = new FileWriter(des);
-			bw = new BufferedWriter(fw);
-			for(Map.Entry<String,Map<Integer,Map<Integer,Object> > > entry:indexTable.entrySet())
-	        {
-				StringBuilder sb=new StringBuilder();
-	        	sb.append(entry.getKey()+":");
-	        	for(Map.Entry<Integer,Map<Integer,Object> > en:entry.getValue().entrySet())
-	        	{
-	        		sb.append(en.getKey()+"#");
-	        		for(Map.Entry<Integer, Object> e:en.getValue().entrySet())
-	        		{
-	        			sb.append(e.getKey()+"$"+e.getValue()+",");
-	        		}
-	        		sb.deleteCharAt(sb.length() - 1);
-	        		sb.append(";");
-	        	}
-	        	sb.deleteCharAt(sb.length() - 1);
-	        	sb.append("\n");
-	        	bw.write(sb.toString());
-	        }
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		} 
-		finally 
-		{
-			try 
-			{
-				if (bw != null)
-					bw.close();
-				if (fw != null)
-					fw.close();
-			} 
-			catch (IOException ex) 
-			{
-				ex.printStackTrace();
-			}
-		}
-    }*/
 	
 	public static void updateIndexTable(String word,int docId,int category)
 	{
@@ -96,9 +57,9 @@ public class Indexing
 		else
 			cat=new TreeMap<Integer,Object>();
 		if(cat.containsKey(category))
-			cat.put(category, (int)cat.get(category)+1);
+			cat.put(category, (long)cat.get(category)+1);
 		else
-			cat.put(category, 1);
+			cat.put(category, 1L);
 		doc.put(docId, cat);
 		indexTable.put(word, doc);
 	}

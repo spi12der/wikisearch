@@ -24,7 +24,7 @@ public class XMLParser
 	}
 	
 	
-	public void parse(String xmlPath)
+	public void parse(String xmlPath) throws Exception
 	{
 		try
 	    {
@@ -44,7 +44,12 @@ public class XMLParser
 			         title = attributes.getValue("title");
 			         pageId++;
 			         if(pageId%80==0)
-			        	 WriteDict.writeDictToFile();
+						try {
+							WriteDict.writeDictToFile();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 			    }
 				if (qName.equalsIgnoreCase("text")) {
 					text = true;
@@ -81,7 +86,7 @@ public class XMLParser
 		    saxParser.parse(xmlPath, handler);
 	    } 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 	    }
 	}
 	
@@ -97,18 +102,19 @@ public class XMLParser
 				if(!StopWordsRemover.stopWordSet.contains(stemmedText))
 				{
 					long count=0;
-					double size=Indexing.docMap.get(pageId);
+					double size=0;
 					if(Indexing.indexTable.containsKey(stemmedText) && 
 							Indexing.indexTable.get(stemmedText).containsKey(pageId))
 					{
-						count=(long)Indexing.indexTable.get(stemmedText).get(pageId).get(1);
+						count=(Long)Indexing.indexTable.get(stemmedText).get(pageId).get(1);
+						size=Indexing.docMap.get(pageId);
 						size-=(count*count);
 						
 					}
 					count++;
 					size+=(count*count);
 					Indexing.docMap.put(pageId, size);
-					Indexing.indexTable.get(stemmedText).get(pageId).put(1, count);
+					Indexing.updateIndexTable(stemmedText,pageId, 1);
 					Indexing.updateIndexTable(stemmedText, pageId,category);
 				}	
 			}

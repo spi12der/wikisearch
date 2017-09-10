@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -26,7 +27,7 @@ public class MergeList
 	public List<String> getFileList(String folderPath)
 	{
 		List<String> fileList=new ArrayList<String>();
-		File folder = new File("your/path");
+		File folder = new File(folderPath);
 		File[] listOfFiles = folder.listFiles();
 		for (int i = 0; i < listOfFiles.length; i++) 
 		{
@@ -47,8 +48,8 @@ public class MergeList
 			Map<Integer,Object> termMap=new TreeMap<Integer,Object>();
 			for(String term:terms)
 			{
-				String part[]=term.split("$");
-				termMap.put(Integer.parseInt(part[0]), Integer.parseInt(part[1]));
+				String part[]=term.split("-");
+				termMap.put(Integer.parseInt(part[0]), part[1]);
 			}
 			postingMap.put(Integer.parseInt(token[0]), termMap);
 		}
@@ -77,7 +78,7 @@ public class MergeList
 		return b;
 	}
 	
-	public void addPriorityQueue(BufferedReader bf,int index)
+	public void addPriorityQueue(BufferedReader bf,int index) throws Exception
 	{
 		try
 		{
@@ -94,11 +95,11 @@ public class MergeList
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			throw e;
 		}
 	}
 	
-	public void mergeIndexes(String folderPath,String indexPath)
+	public void mergeIndexes(String folderPath,String indexPath) throws Exception
 	{
 		List<String> fileList=getFileList(folderPath);
 		BufferedReader bf[]=new BufferedReader[fileList.size()];
@@ -117,7 +118,7 @@ public class MergeList
 				WordNode temp=pq.poll();
 				addPriorityQueue(bf[temp.getIndex()], temp.getIndex());
 				Map<Integer,Map<Integer,Object> > postingMap=makeMap(temp.getPostingString());
-				while(temp.getWord().equalsIgnoreCase(pq.peek().getWord()))
+				while(!pq.isEmpty() && temp.getWord().equalsIgnoreCase(pq.peek().getWord()))
 				{
 					WordNode t=pq.poll();
 					addPriorityQueue(bf[t.getIndex()], t.getIndex());
@@ -137,12 +138,13 @@ public class MergeList
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			throw e;
 		}
 	}
 	
-	public void writeToFile(String word,Map<Integer,Map<Integer,Object> > postingMap,BufferedWriter bw)
+	public void writeToFile(String word,Map<Integer,Map<Integer,Object> > postingMap,BufferedWriter bw) throws Exception
 	{
+		DecimalFormat df = new DecimalFormat("#.####");
 		try
 		{
 			StringBuilder sb=new StringBuilder();
@@ -152,7 +154,10 @@ public class MergeList
 	    		sb.append(en.getKey()+"#");
 	    		for(Map.Entry<Integer, Object> e:en.getValue().entrySet())
 	    		{
-	    			sb.append(e.getKey()+"$"+e.getValue()+",");
+	    			if(e.getKey()==1)
+	    				sb.append(e.getKey()+"-"+df.format(Double.parseDouble(e.getValue().toString()))+",");
+	    			else
+	    				sb.append(e.getKey()+"-"+e.getValue()+",");
 	    		}
 	    		sb.deleteCharAt(sb.length() - 1);
 	    		sb.append(";");
@@ -163,7 +168,7 @@ public class MergeList
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			throw e;
 		}
 	}
 }

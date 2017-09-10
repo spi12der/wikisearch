@@ -12,7 +12,7 @@ public class WriteDict
 	public static int fileNo=1;
 	public static String folderPath="/home/rohit/IIIT/Sem3/IRE/Part";
 	
-	public static void writeDictToFile()
+	public static void writeDictToFile() throws Exception
 	{
 		try
 		{
@@ -26,7 +26,7 @@ public class WriteDict
 			{
 				for(Integer i:Indexing.indexTable.get(word).keySet())
 				{
-					double count=(double)Indexing.indexTable.get(word).get(i).get(1);
+					double count=new Long((long) Indexing.indexTable.get(word).get(i).get(1)).doubleValue();
 					Indexing.indexTable.get(word).get(i).put(1, count/Indexing.docMap.get(i));
 				}
 				MergeList ml=new MergeList();
@@ -37,8 +37,8 @@ public class WriteDict
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
-		}
+			throw e;
+		}	
 		Indexing.indexTable.clear();
 		Indexing.docMap.clear();
 	}
