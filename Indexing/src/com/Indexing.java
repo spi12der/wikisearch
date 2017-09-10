@@ -30,10 +30,10 @@ public class Indexing
 			XMLParser obj=new XMLParser();
 			obj.parse(src);
 			WriteDict.writeDictToFile();
-			//printIndex();
-			//saveToFile(des);
 			MergeList ml=new MergeList();
 			ml.mergeIndexes(WriteDict.folderPath, indexPath);
+			Multilevel mil=new Multilevel();
+			mil.createMultilevel('A', indexPath);
 		}
 		catch (Exception e) 
 		{
