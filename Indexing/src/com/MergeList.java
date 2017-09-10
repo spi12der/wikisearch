@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
+
+import parse.XMLParser;
+
 import java.util.Map;
 
 public class MergeList 
@@ -131,7 +134,7 @@ public class MergeList
 					bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A"+pageCount+".txt")));
 					x=0;
 				}
-				writeToFile(temp.getWord(), postingMap, bw);
+				writeToFile(temp.getWord(), updateTF(postingMap), bw);
 				x++;
 			}
 			bw.close();
@@ -171,4 +174,17 @@ public class MergeList
 			throw e;
 		}
 	}
+	
+	public Map<Integer,Map<Integer,Object> > updateTF(Map<Integer,Map<Integer,Object> > postingMap)
+	{
+		double size=postingMap.size();
+		for(Integer i:postingMap.keySet())
+		{
+			double tf=Double.parseDouble(postingMap.get(i).get(1).toString());
+			tf=(tf*XMLParser.pageId)/size;
+			postingMap.get(i).put(1, tf);
+		}
+		return postingMap;
+	}
+	
 }
