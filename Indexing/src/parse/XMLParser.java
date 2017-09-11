@@ -1,5 +1,8 @@
 package parse;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -79,7 +82,16 @@ public class XMLParser
 					
 		      		String[] words = content.split("[^a-zA-Z]");
 					for (String oneWord : words) 
-						addToDictionary(oneWord, 2);
+						addToDictionary(oneWord, 1);
+					
+					String[] info = infoboxAdder(content).split("[^a-zA-Z]");
+					for (String oneWord : info) 
+						addToDictionary(oneWord, 3);
+					
+					String[] cat = catagoryAdder(content).split("[^a-zA-Z]");
+					for (String oneWord : cat) 
+						addToDictionary(oneWord, 4);
+					
 		      		text=false;
 		      		title = "";
 		      	}
@@ -112,9 +124,9 @@ public class XMLParser
 		count++;
 		size+=(count*count);
 		Indexing.docMap.put(pageId, size);
-		Indexing.updateIndexTable(stemmedText,pageId, 1);
-		if(category!=1)
-			Indexing.updateIndexTable(stemmedText, pageId,category);
+		if(category==2)
+			Indexing.updateIndexTable(stemmedText,pageId, 1);
+		Indexing.updateIndexTable(stemmedText, pageId,category);
 	}
 	
 	public String getValidWord(String word)
@@ -135,5 +147,34 @@ public class XMLParser
 			}
 		}
 		return stemmedText;
+	}
+	
+	public String infoboxAdder(String text) 
+	{
+		String t = "";
+		String regex1 = "\\{\\{infobox";
+		String regex2 = "\\}\\}";
+		Matcher m1 = Pattern.compile(regex1).matcher(text);
+		Matcher m2 = Pattern.compile(regex2).matcher(text);
+		while (m1.find())
+			if(m2.find(m1.start())){
+				t += text.substring(m1.end(), m2.start());
+			}
+		return t;
+	}
+	
+	public String catagoryAdder(String text) 
+	{
+		String t = "";
+		String regex1 = "\\[\\[category:";
+		String regex2 = "\\]\\]";
+		Matcher m1 = Pattern.compile(regex1).matcher(text);
+		Matcher m2 = Pattern.compile(regex2).matcher(text);
+		while (m1.find())
+			if(m2.find(m1.start()))
+			{
+				t += text.substring(m1.end(), m2.start()) + " ";
+			}
+		return t;
 	}
 }

@@ -141,8 +141,15 @@ public class MergeList
 	    	for(Map.Entry<Integer,Map<Integer,Object> > en:postingMap.entrySet())
 	    	{
 	    		sb.append(en.getKey()+"#");
+	    		int count=1;
 	    		for(Map.Entry<Integer, Object> e:en.getValue().entrySet())
-	    			sb.append(e.getKey()+"-"+e.getValue()+",");
+	    		{
+	    			if(count==1)
+	    				sb.append(e.getKey()+"-"+e.getValue()+",");
+	    			else
+	    				sb.append(e.getKey()+",");
+	    			count++;
+	    		}	
 	    		sb.deleteCharAt(sb.length() - 1);
 	    		sb.append(";");
 	    	}
