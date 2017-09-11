@@ -10,8 +10,8 @@ public class Indexing
 {
 	public static Map<String,Map<Integer,Map<Integer,Object> > > indexTable;
 	public static Map<Integer,Double> docMap;
-	public static String src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
-	public static String indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
+	public static String src;
+	public static String rootPath;
 	
 	static
 	{
@@ -22,16 +22,19 @@ public class Indexing
 	public static void main(String[] args) 
 	{
 		long start=System.currentTimeMillis();
-		
+		/*src=args[0];
+		rootPath=args[1];*/
+		src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
+		rootPath="/home/rohit/IIIT/Sem3/IRE";
 		try
 		{
 			XMLParser obj=new XMLParser();
 			obj.parse(src);
 			WriteDict.writeDictToFile();
 			MergeList ml=new MergeList();
-			ml.mergeIndexes(WriteDict.folderPath, indexPath);
+			ml.mergeIndexes(rootPath+"/Part", rootPath+"/Index");
 			Multilevel mil=new Multilevel();
-			mil.createMultilevel('A', indexPath);
+			mil.createMultilevel('A', rootPath+"/Index");
 		}
 		catch (Exception e) 
 		{

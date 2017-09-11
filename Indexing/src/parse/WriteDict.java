@@ -10,14 +10,12 @@ import com.MergeList;
 public class WriteDict 
 {
 	public static int fileNo=1;
-	public static String folderPath="/home/rohit/IIIT/Sem3/IRE/Part";
-	public static String indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 	
 	public static void writeDictToFile() throws Exception
 	{
 		try
 		{
-			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(folderPath+"/P"+fileNo+".txt")));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(Indexing.rootPath+"/Part/P"+fileNo+".txt")));
 			for(Integer i:Indexing.docMap.keySet())
 			{
 				double size=Indexing.docMap.get(i);
@@ -48,7 +46,7 @@ public class WriteDict
 	{
 		try
 		{
-			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(indexPath+"/doc.txt"),true));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(Indexing.rootPath+"/Index/doc.txt"),true));
 			bw.append(docId+":"+title+"\n");
 			bw.close();
 		}

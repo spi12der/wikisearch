@@ -18,13 +18,14 @@ public class QueryMain
 	static
 	{
 		highLevel='B';
-		indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 		startFile="1.txt";
 	}
 	
 	public static void main(String[] args) 
 	{
 		String query="bath baroqu";
+		//indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
+		indexPath=args[1];
 		String tokens[]=query.split(" ");
 		List<ResultNode> arr;
 		QueryMain qm=new QueryMain();
