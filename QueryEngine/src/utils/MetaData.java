@@ -31,7 +31,7 @@ public class MetaData
 			e.printStackTrace();
 		}
 		categoryMap.put("t:",2);
-		categoryMap.put("c:",3);
-		categoryMap.put("i:",4);
+		categoryMap.put("i:",3);
+		categoryMap.put("c:",4);
 	}
 }
