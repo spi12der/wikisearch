@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 import utils.PorterStemmer;
@@ -17,15 +18,20 @@ public class QueryMain
 	
 	static
 	{
-		highLevel='B';
 		startFile="1.txt";
 	}
 	
 	public static void main(String[] args) 
 	{
-		String query="Donald";
+		/*String query="#ashwin#";
 		indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
-		//indexPath=args[1];
+		highLevel='B';*/
+		indexPath=args[0];
+		highLevel=args[1].charAt(0);
+		Scanner sc=new Scanner(System.in);
+		String query=sc.nextLine();
+		sc.close();
+		long start=System.currentTimeMillis();
 		String tokens[]=query.split(" ");
 		List<ResultNode> arr;
 		QueryMain qm=new QueryMain();
@@ -47,14 +53,15 @@ public class QueryMain
 				{
 					ResultNode t=arr.get(i);
 					System.out.println((i+1)+".\t"+t.getDocId()+"\t"+qu.getDocTitle(t.getDocId()));
-				}	
+				}
 			}
+			long end=System.currentTimeMillis();
+			System.out.println("\n"+arr.size()+" results in "+((double)((end-start)))/1000.0 + "sec");
 		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public List<ResultNode> termQuery(String tokens[]) throws IOException
