@@ -18,13 +18,13 @@ public class QueryMain
 	static
 	{
 		highLevel='B';
-		indexPath="/home/IRE";
+		indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 		startFile="1.txt";
 	}
 	
 	public static void main(String[] args) 
 	{
-		String query="rohit";
+		String query="bath baroqu";
 		String tokens[]=query.split(" ");
 		List<ResultNode> arr;
 		QueryMain qm=new QueryMain();
@@ -94,7 +94,7 @@ public class QueryMain
 				result=qu.mergeMap(result, postingMap);
 			}	
 		}
-		arr=(List<ResultNode>) result.values();
+		arr=getListFromMap(result);
 		return arr;
 	}
 	
@@ -117,7 +117,15 @@ public class QueryMain
 				e.printStackTrace();
 			}
 		}
-		arr=(List<ResultNode>) result.values();
+		arr=getListFromMap(result);
+		return arr;
+	}
+	
+	public List<ResultNode> getListFromMap(Map<Integer,ResultNode> temp)
+	{
+		List<ResultNode> arr=new ArrayList<ResultNode>();
+		for(Integer i:temp.keySet())
+			arr.add(temp.get(i));
 		return arr;
 	}
 	

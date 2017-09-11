@@ -73,16 +73,19 @@ public class QueryUtil
 	public Map<Integer,ResultNode> makeMultiMap(String postingString)
 	{
 		Map<Integer,ResultNode> postingMap=new TreeMap<Integer,ResultNode>();
-		String docs[]=postingString.split(";");
-		for(String doc:docs)
+		if(!postingString.isEmpty())
 		{
-			String docT[]=doc.split("#");
-			ResultNode r=new ResultNode();
-			int docId=Integer.parseInt(docT[0]);
-			r.setDocId(docId);
-			String cat[]=docT[1].split(",");
-			r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
-			postingMap.put(docId, r);
+			String docs[]=postingString.split(";");
+			for(String doc:docs)
+			{
+				String docT[]=doc.split("#");
+				ResultNode r=new ResultNode();
+				int docId=Integer.parseInt(docT[0]);
+				r.setDocId(docId);
+				String cat[]=docT[1].split(",");
+				r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
+				postingMap.put(docId, r);
+			}
 		}
 		return postingMap;
 	}
@@ -90,32 +93,36 @@ public class QueryUtil
 	public Map<Integer,ResultNode> makeTermMap(String postingString,int category)
 	{
 		Map<Integer,ResultNode> postingMap=new TreeMap<Integer,ResultNode>();
-		String docs[]=postingString.split(";");
-		for(String doc:docs)
+		if(!postingString.isEmpty())
 		{
-			String docT[]=doc.split("#");
-			ResultNode r=new ResultNode();
-			int docId=Integer.parseInt(docT[0]);
-			r.setDocId(docId);
-			String cat[]=docT[1].split(",");
-			r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
-			boolean flag=false;
-			for(String cate:cat)
+			String docs[]=postingString.split(";");
+			for(String doc:docs)
 			{
-				if(category==Integer.parseInt(cate.split("-")[0]))
+				String docT[]=doc.split("#");
+				ResultNode r=new ResultNode();
+				int docId=Integer.parseInt(docT[0]);
+				r.setDocId(docId);
+				String cat[]=docT[1].split(",");
+				r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
+				boolean flag=false;
+				for(String cate:cat)
 				{
-					flag=true;
-					break;
+					if(category==Integer.parseInt(cate.split("-")[0]))
+					{
+						flag=true;
+						break;
+					}
 				}
-			}
-			if(flag)
-				postingMap.put(docId, r);
-		}
+				if(flag)
+					postingMap.put(docId, r);
+			}	
+		}	
 		return postingMap;
 	}
 	
 	public Map<Integer,ResultNode> mergeMap(Map<Integer,ResultNode> a,Map<Integer,ResultNode> b)
 	{
+		Map<Integer,ResultNode> temp=new TreeMap<Integer,ResultNode>();
 		if(a.size()==0)
 			return b;
 		else
@@ -127,12 +134,10 @@ public class QueryUtil
 					ResultNode at=a.get(i);
 					ResultNode bt=b.get(i);
 					at.setTfScore(at.getTfScore()+bt.getTfScore());
-					a.put(i, at);
+					temp.put(i, at);
 				}
-				else
-					a.remove(i);
 			}
-			return a;
+			return temp;
 		}
 	}
 	

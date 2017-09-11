@@ -72,6 +72,11 @@ public class XMLParser
 				String content=currentText.toString();
 		      	if(content.length() > 0 && text) 
 		      	{
+		      		String[] w = title.split("[^a-zA-Z]");
+					for (String oneWord : w) 
+						addToDictionary(oneWord, 2);
+					
+					
 		      		String[] words = content.split("[^a-zA-Z]");
 					for (String oneWord : words) 
 						addToDictionary(oneWord, 2);
