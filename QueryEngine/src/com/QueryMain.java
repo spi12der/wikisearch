@@ -23,9 +23,9 @@ public class QueryMain
 	
 	public static void main(String[] args) 
 	{
-		String query="bath baroqu";
-		//indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
-		indexPath=args[1];
+		String query="Donald";
+		indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
+		//indexPath=args[1];
 		String tokens[]=query.split(" ");
 		List<ResultNode> arr;
 		QueryMain qm=new QueryMain();
@@ -75,7 +75,7 @@ public class QueryMain
 				{
 					try
 					{
-						wordList.add(obj.stem(tokens[i]));
+						wordList.add(obj.stem(tokens[i].toLowerCase()));
 					}
 					catch (StringIndexOutOfBoundsException e) 
 					{
@@ -109,7 +109,7 @@ public class QueryMain
 		{
 			try
 			{
-				token=obj.stem(token);
+				token=obj.stem(token.toLowerCase());
 				Map<Integer,ResultNode> postingMap=qu.makeMultiMap(qu.getWordString(highLevel, token,startFile));
 				result=qu.mergeMap(result, postingMap);
 			}
