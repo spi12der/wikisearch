@@ -11,6 +11,7 @@ public class WriteDict
 {
 	public static int fileNo=1;
 	public static String folderPath="/home/rohit/IIIT/Sem3/IRE/Part";
+	public static String indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 	
 	public static void writeDictToFile() throws Exception
 	{
@@ -41,5 +42,19 @@ public class WriteDict
 		}	
 		Indexing.indexTable.clear();
 		Indexing.docMap.clear();
+	}
+	
+	public static void writeDocDetails(int docId,String title)
+	{
+		try
+		{
+			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(indexPath+"/doc.txt"),true));
+			bw.append(docId+":"+title+"\n");
+			bw.close();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }

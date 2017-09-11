@@ -10,6 +10,8 @@ public class Indexing
 {
 	public static Map<String,Map<Integer,Map<Integer,Object> > > indexTable;
 	public static Map<Integer,Double> docMap;
+	public static String src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
+	public static String indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 	
 	static
 	{
@@ -20,11 +22,7 @@ public class Indexing
 	public static void main(String[] args) 
 	{
 		long start=System.currentTimeMillis();
-		String src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
-		//String des="/home/rohit/IIIT/Sem3/IRE/index.txt";
-		String indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
-		/*String src=args[0];
-		String des=args[1];*/
+		
 		try
 		{
 			XMLParser obj=new XMLParser();

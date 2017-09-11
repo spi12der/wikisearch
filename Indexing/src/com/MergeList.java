@@ -62,22 +62,7 @@ public class MergeList
 	public Map<Integer,Map<Integer,Object> > mergeMap(Map<Integer,Map<Integer,Object> > a,Map<Integer,Map<Integer,Object> > b)
 	{
 		for(Map.Entry<Integer,Map<Integer,Object> > entry:a.entrySet())
-		{
-			/*if(b.containsKey(entry.getKey()))
-			{
-				Map<Integer,Integer> temp=b.get(entry.getKey());
-				for(Map.Entry<Integer,Integer> en:entry.getValue().entrySet())
-				{
-					int val=en.getValue();
-					if(temp.containsKey(en.getKey()))
-						val+=temp.get(en.getKey());
-					temp.put(en.getKey(),val);
-				}
-				b.put(entry.getKey(), temp);
-			}
-			else*/
 			b.put(entry.getKey(),entry.getValue());
-		}
 		return b;
 	}
 	
@@ -115,7 +100,9 @@ public class MergeList
 			for(int i=0;i<bf.length;i++)
 				addPriorityQueue(bf[i], i);
 			x=0;
-			bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A"+pageCount+".txt")));
+			File dir=new File(indexPath+"/A");
+			dir.mkdirs();
+			bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A/"+pageCount+".txt")));
 			while(!pq.isEmpty())
 			{
 				WordNode temp=pq.poll();
@@ -131,13 +118,37 @@ public class MergeList
 				{
 					bw.close();
 					pageCount++;
-					bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A"+pageCount+".txt")));
+					bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A/"+pageCount+".txt")));
 					x=0;
 				}
-				writeToFile(temp.getWord(), updateTF(postingMap), bw);
+				writeToFile1(temp.getWord(), updateTF(postingMap), bw);
 				x++;
 			}
 			bw.close();
+		}
+		catch (Exception e) 
+		{
+			throw e;
+		}
+	}
+	
+	public void writeToFile1(String word,Map<Integer,Map<Integer,Object> > postingMap,BufferedWriter bw) throws Exception
+	{
+		try
+		{
+			StringBuilder sb=new StringBuilder();
+	    	sb.append(word+":");
+	    	for(Map.Entry<Integer,Map<Integer,Object> > en:postingMap.entrySet())
+	    	{
+	    		sb.append(en.getKey()+"#");
+	    		for(Map.Entry<Integer, Object> e:en.getValue().entrySet())
+	    			sb.append(e.getKey()+"-"+e.getValue()+",");
+	    		sb.deleteCharAt(sb.length() - 1);
+	    		sb.append(";");
+	    	}
+	    	sb.deleteCharAt(sb.length() - 1);
+	    	sb.append("\n");
+	    	bw.write(sb.toString());
 		}
 		catch (Exception e) 
 		{
@@ -182,7 +193,8 @@ public class MergeList
 		{
 			double tf=Double.parseDouble(postingMap.get(i).get(1).toString());
 			tf=(tf*XMLParser.pageId)/size;
-			postingMap.get(i).put(1, tf);
+			long res=(long)(tf*1000);
+			postingMap.get(i).put(1, res);
 		}
 		return postingMap;
 	}

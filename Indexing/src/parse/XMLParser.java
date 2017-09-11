@@ -43,6 +43,7 @@ public class XMLParser
 				{
 			         title = attributes.getValue("title");
 			         pageId++;
+			         WriteDict.writeDocDetails(pageId, title);
 			         if(pageId%80==0)
 						try {
 							WriteDict.writeDictToFile();
@@ -68,7 +69,7 @@ public class XMLParser
 			   		
 			}
 			public void endElement(String uri, String localName, String qName) throws SAXException {
-		      	String content=currentText.toString();
+				String content=currentText.toString();
 		      	if(content.length() > 0 && text) 
 		      	{
 		      		String[] words = content.split("[^a-zA-Z]");
@@ -92,36 +93,42 @@ public class XMLParser
 	
 	public void addToDictionary(String word,int category)
 	{
-		String stemmedText = null;
+		String stemmedText=getValidWord(word);
+		long count=0;
+		double size=0;
+		if(Indexing.indexTable.containsKey(stemmedText) && 
+				Indexing.indexTable.get(stemmedText).containsKey(pageId))
+		{
+			count=(Long)Indexing.indexTable.get(stemmedText).get(pageId).get(1);
+			size=Indexing.docMap.get(pageId);
+			size-=(count*count);
+			
+		}
+		count++;
+		size+=(count*count);
+		Indexing.docMap.put(pageId, size);
+		Indexing.updateIndexTable(stemmedText,pageId, 1);
+		if(category!=1)
+			Indexing.updateIndexTable(stemmedText, pageId,category);
+	}
+	
+	public String getValidWord(String word)
+	{
+		String stemmedText = "";
 		if (word != "\n" && word != " " && word != "\t" && word != "\r" && word != null
-				&& !word.isEmpty() && word.length()>2) 
+				&& !word.isEmpty() && word.length()>2 && word.length()<21) 
 		{
 			try
 			{
 				stemmedText=porterObj.stem(word.toLowerCase());
-				if(!StopWordsRemover.stopWordSet.contains(stemmedText))
-				{
-					long count=0;
-					double size=0;
-					if(Indexing.indexTable.containsKey(stemmedText) && 
-							Indexing.indexTable.get(stemmedText).containsKey(pageId))
-					{
-						count=(Long)Indexing.indexTable.get(stemmedText).get(pageId).get(1);
-						size=Indexing.docMap.get(pageId);
-						size-=(count*count);
-						
-					}
-					count++;
-					size+=(count*count);
-					Indexing.docMap.put(pageId, size);
-					Indexing.updateIndexTable(stemmedText,pageId, 1);
-					Indexing.updateIndexTable(stemmedText, pageId,category);
-				}	
+				if(StopWordsRemover.stopWordSet.contains(stemmedText))
+					stemmedText="";
 			}
 			catch (StringIndexOutOfBoundsException e) 
 			{
-				//System.out.println("Exceptional word :"+oneWord);
+				//e.printStackTrace();
 			}
 		}
+		return stemmedText;
 	}
 }
