@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import utils.MetaData;
+
 public class QueryUtil 
 {
 	public String getWordString(char level,String word,String file) throws IOException
@@ -136,11 +138,15 @@ public class QueryUtil
 	
 	public String getDocTitle(int docId)
 	{
-		return null;
+		if(MetaData.docMap.containsKey(docId))
+			return MetaData.docMap.get(docId);
+		return "";
 	}
 	
 	public int getCategory(String category)
 	{
+		if(MetaData.categoryMap.containsKey(category))
+			return MetaData.categoryMap.get(category);
 		return 0;
 	}
 	
