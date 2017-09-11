@@ -81,7 +81,7 @@ public class QueryUtil
 			int docId=Integer.parseInt(docT[0]);
 			r.setDocId(docId);
 			String cat[]=docT[1].split(",");
-			r.setTfScore(Double.parseDouble(cat[0].split("-")[1]));
+			r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
 			postingMap.put(docId, r);
 		}
 		return postingMap;
@@ -98,7 +98,7 @@ public class QueryUtil
 			int docId=Integer.parseInt(docT[0]);
 			r.setDocId(docId);
 			String cat[]=docT[1].split(",");
-			r.setTfScore(Double.parseDouble(cat[0].split("-")[1]));
+			r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
 			boolean flag=false;
 			for(String cate:cat)
 			{

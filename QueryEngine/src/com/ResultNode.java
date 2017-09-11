@@ -3,7 +3,7 @@ package com;
 public class ResultNode implements Comparable<ResultNode>
 {
 	private int docId;
-	private double tfScore;
+	private long tfScore;
 	
 	public int getDocId() {
 		return docId;
@@ -11,10 +11,11 @@ public class ResultNode implements Comparable<ResultNode>
 	public void setDocId(int docId) {
 		this.docId = docId;
 	}
-	public double getTfScore() {
+	
+	public long getTfScore() {
 		return tfScore;
 	}
-	public void setTfScore(double tfScore) {
+	public void setTfScore(long tfScore) {
 		this.tfScore = tfScore;
 	}
 	
