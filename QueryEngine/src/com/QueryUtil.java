@@ -105,9 +105,9 @@ public class QueryUtil
 				String cat[]=docT[1].split(",");
 				r.setTfScore(Long.parseLong(cat[0].split("-")[1]));
 				boolean flag=false;
-				for(String cate:cat)
+				for(int i=1;i<cat.length;i++)
 				{
-					if(category==Integer.parseInt(cate.split("-")[0]))
+					if(category==Integer.parseInt(cat[i]))
 					{
 						flag=true;
 						break;
