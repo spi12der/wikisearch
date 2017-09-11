@@ -11,9 +11,9 @@ import utils.PorterStemmer;
 
 public class QueryMain 
 {
-	static char highLevel;
-	static String indexPath;
-	static String startFile;
+	public static char highLevel;
+	public static String indexPath;
+	public static String startFile;
 	
 	static
 	{
