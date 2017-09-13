@@ -58,6 +58,54 @@ public class Multilevel
 		}	
 	}
 	
+	public void createMultilevelDoc(char level,String folderPath)
+	{
+		File base = new File(folderPath+"/"+level);
+		File[] listOfFiles = base.listFiles();
+		if(listOfFiles.length>1)
+		{
+			int pageCount=1,wordCount=0;
+			int val=level;
+			level=(char)(val+1);
+			File dir=new File(folderPath+"/"+level);
+			dir.mkdirs();
+			try
+			{
+				BufferedWriter bw=new BufferedWriter(new FileWriter(new File(folderPath+"/"+level+"/"+pageCount+".txt")));
+				Map<Integer,String> wordMap=new TreeMap<Integer,String>();
+				for(File f:listOfFiles)
+				{
+					BufferedReader br=new BufferedReader(new FileReader(f));
+					String line,lastLine="";
+					while((line = br.readLine()) != null)
+					{
+						lastLine=line;
+					}
+					br.close();
+					if(wordCount==1000)
+					{
+						writeMapDoc(bw, wordMap);
+						wordMap.clear();
+						bw.close();
+						pageCount++;
+						bw=new BufferedWriter(new FileWriter(new File(folderPath+"/"+level+"/"+pageCount+".txt")));
+						wordCount=0;
+					}
+					wordMap.put(Integer.parseInt(lastLine.split(":")[0]), f.getName());
+					wordCount++;
+				}
+				writeMapDoc(bw, wordMap);
+				wordMap.clear();
+				bw.close();
+				createMultilevel(level, folderPath);
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}	
+	}
+	
 	public void makeDocLevel(String source,String destination)
 	{
 		try
@@ -78,7 +126,8 @@ public class Multilevel
 					count=0;
 					bw=new BufferedWriter(new FileWriter(new File(destination+"/"+pageCount+".txt")));
 				}
-				bw.write(line);
+				bw.write(line+"\n");
+				count++;
 			}
 			bw.close();
 			br.close();
@@ -94,6 +143,21 @@ public class Multilevel
 		try
 		{
 			for(Map.Entry<String, String> entry:wordMap.entrySet())
+			{
+				bw.write(entry.getKey()+":"+entry.getValue()+"\n");
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeMapDoc(BufferedWriter bw,Map<Integer,String> wordMap)
+	{
+		try
+		{
+			for(Map.Entry<Integer, String> entry:wordMap.entrySet())
 			{
 				bw.write(entry.getKey()+":"+entry.getValue()+"\n");
 			}

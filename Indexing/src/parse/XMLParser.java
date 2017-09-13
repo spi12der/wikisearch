@@ -47,8 +47,9 @@ public class XMLParser
 			         title = attributes.getValue("title");
 			         pageId++;
 			         WriteDict.writeDocDetails(pageId, title);
-			         if(pageId%80==0)
+			         if(pageId%300==0)
 						try {
+							System.out.println(pageId+" documents processed");	
 							WriteDict.writeDictToFile();
 						} catch (Exception e) {
 							// TODO Auto-generated catch block

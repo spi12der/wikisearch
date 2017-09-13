@@ -116,6 +116,7 @@ public class MergeList
 				}
 				if(x==1000)
 				{
+					System.out.println("File no "+pageCount+" merging completed");
 					bw.close();
 					pageCount++;
 					bw=new BufferedWriter(new FileWriter(new File(indexPath+"/A/"+pageCount+".txt")));
