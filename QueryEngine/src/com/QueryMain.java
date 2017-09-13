@@ -12,7 +12,7 @@ import utils.PorterStemmer;
 
 public class QueryMain 
 {
-	public static char highLevel;
+	public static char highLevel,docLevel;
 	public static String indexPath;
 	public static String startFile;
 	
@@ -23,11 +23,13 @@ public class QueryMain
 	
 	public static void main(String[] args) 
 	{
-		/*String query="#ashwin#";
+		//String query="#ashwin#";
 		indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
-		highLevel='B';*/
-		indexPath=args[0];
+		highLevel='B';
+		docLevel='B';
+		/*indexPath=args[0];
 		highLevel=args[1].charAt(0);
+		docLevel=args[2].charAt(0);*/
 		Scanner sc=new Scanner(System.in);
 		String query=sc.nextLine();
 		sc.close();
@@ -52,7 +54,7 @@ public class QueryMain
 				for(int i=0;i<10 && i<arr.size();i++)
 				{
 					ResultNode t=arr.get(i);
-					System.out.println((i+1)+".\t"+t.getDocId()+"\t"+qu.getDocTitle(t.getDocId()));
+					System.out.println((i+1)+".\t"+t.getDocId()+"\t"+qu.getDocTitle(docLevel,t.getDocId(),startFile));
 				}
 			}
 			long end=System.currentTimeMillis();

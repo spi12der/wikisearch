@@ -141,11 +141,63 @@ public class QueryUtil
 		}
 	}
 	
-	public String getDocTitle(int docId)
+	public String getDocTitle(char level,int docId,String file) throws IOException
 	{
-		if(MetaData.docMap.containsKey(docId))
-			return MetaData.docMap.get(docId);
-		return "";
+		if(level=='A')
+		{
+			BufferedReader br=null;
+			try
+			{
+				br=new BufferedReader(new FileReader(new File(QueryMain.indexPath+"/Doc/"+level+"/"+file)));
+				String line;
+				while((line = br.readLine()) != null)
+				{
+					String tokens[]=line.split(":");
+					if(docId==Integer.parseInt(tokens[0]))
+					{
+						return tokens[1];
+					}
+				}
+				return "";
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				br.close();
+			}
+		}
+		else
+		{
+			BufferedReader br=null;
+			try
+			{
+				br=new BufferedReader(new FileReader(new File(QueryMain.indexPath+"/Doc/"+level+"/"+file)));
+				String line;
+				while((line = br.readLine()) != null)
+				{
+					String tokens[]=line.split(":");
+					if(docId<=Integer.parseInt(tokens[0]))
+					{
+						int val=level;
+						level=(char)(val-1);
+						return getDocTitle(level, docId, tokens[1]);
+					}
+				}
+				return "";
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				br.close();
+			}
+		}
+		return null;
 	}
 	
 	public int getCategory(String category)
