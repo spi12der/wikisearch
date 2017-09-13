@@ -46,7 +46,7 @@ public class WriteDict
 	{
 		try
 		{
-			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(Indexing.rootPath+"/Index/doc.txt"),true));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(Indexing.rootPath+"/doc.txt"),true));
 			bw.append(docId+":"+title+"\n");
 			bw.close();
 		}

@@ -58,6 +58,37 @@ public class Multilevel
 		}	
 	}
 	
+	public void makeDocLevel(String source,String destination)
+	{
+		try
+		{
+			BufferedReader br=new BufferedReader(new FileReader(new File(source)));
+			int pageCount=1;
+			File f=new File(destination);
+			f.mkdirs();
+			BufferedWriter bw=new BufferedWriter(new FileWriter(new File(destination+"/"+pageCount+".txt")));
+			String line=null;
+			int count=0;
+			while((line = br.readLine()) != null)
+			{
+				if(count==1000)
+				{
+					bw.close();
+					pageCount++;
+					count=0;
+					bw=new BufferedWriter(new FileWriter(new File(destination+"/"+pageCount+".txt")));
+				}
+				bw.write(line);
+			}
+			bw.close();
+			br.close();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void writeMap(BufferedWriter bw,Map<String,String> wordMap)
 	{
 		try

@@ -1,7 +1,10 @@
 package com;
 
+import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.swing.text.MaskFormatter;
 
 import parse.WriteDict;
 import parse.XMLParser;
@@ -22,10 +25,10 @@ public class Indexing
 	public static void main(String[] args) 
 	{
 		long start=System.currentTimeMillis();
-		/*src=args[0];
-		rootPath=args[1];*/
-		src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
-		rootPath="/home/rohit/IIIT/Sem3/IRE";
+		src=args[0];
+		rootPath=args[1];
+		/*src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
+		rootPath="/home/rohit/IIIT/Sem3/IRE";*/
 		try
 		{
 			XMLParser obj=new XMLParser();
@@ -35,6 +38,10 @@ public class Indexing
 			ml.mergeIndexes(rootPath+"/Part", rootPath+"/Index");
 			Multilevel mil=new Multilevel();
 			mil.createMultilevel('A', rootPath+"/Index");
+			File f=new File(rootPath+"/Index/Doc");
+			f.mkdir();
+			mil.makeDocLevel(rootPath+"/doc.txt",rootPath+"/Index/Doc/A");
+			mil.createMultilevel('A', rootPath+"/Index/Doc");
 		}
 		catch (Exception e) 
 		{
