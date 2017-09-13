@@ -1,7 +1,7 @@
 Wiki search engine
 
-Includes 2 projects :
-Index Engine
+Includes 2 projects :<br>
+Index Engine<br>
 Query Engine
 
 Index Engine takes two argument 
