@@ -23,10 +23,10 @@ public class Indexing
 	public static void main(String[] args) 
 	{
 		long start=System.currentTimeMillis();
-		//src=args[0];
-		//rootPath=args[1];
-		src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
-		rootPath="/home/rohit/IIIT/Sem3/IRE";
+		src=args[0];
+		rootPath=args[1];
+		//src="/home/rohit/IIIT/Sem3/IRE/wiki-search-small.xml";
+		//rootPath="/home/rohit/IIIT/Sem3/IRE";
 		try
 		{
 			XMLParser obj=new XMLParser();
@@ -34,7 +34,7 @@ public class Indexing
 			WriteDict.writeDictToFile();
 			System.out.println("File Merging started");
 			MergeList ml=new MergeList();
-			ml.mergeIndexes(rootPath+"/Part", rootPath+"/Index");
+			ml.mergeIndexes(rootPath+"/Temp", rootPath+"/Index");
 			System.out.println("Multilevel indexing started");
 			Multilevel mil=new Multilevel();
 			mil.createMultilevel('A', rootPath+"/Index");

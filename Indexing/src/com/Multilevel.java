@@ -14,6 +14,7 @@ public class Multilevel
 	{
 		File base = new File(folderPath+"/"+level);
 		File[] listOfFiles = base.listFiles();
+		String basePath=folderPath+"/"+level;
 		if(listOfFiles.length>1)
 		{
 			int pageCount=1,wordCount=0;
@@ -25,9 +26,9 @@ public class Multilevel
 			{
 				BufferedWriter bw=new BufferedWriter(new FileWriter(new File(folderPath+"/"+level+"/"+pageCount+".txt")));
 				Map<String,String> wordMap=new TreeMap<String,String>();
-				for(File f:listOfFiles)
+				for(int i=1;i<=listOfFiles.length;i++)
 				{
-					BufferedReader br=new BufferedReader(new FileReader(f));
+					BufferedReader br=new BufferedReader(new FileReader(new File(basePath+"/"+i+".txt")));
 					String line,lastLine="";
 					while((line = br.readLine()) != null)
 					{
@@ -43,7 +44,7 @@ public class Multilevel
 						bw=new BufferedWriter(new FileWriter(new File(folderPath+"/"+level+"/"+pageCount+".txt")));
 						wordCount=0;
 					}
-					wordMap.put(lastLine.split(":")[0], f.getName());
+					wordMap.put(lastLine.split(":")[0], i+".txt");
 					wordCount++;
 				}
 				writeMap(bw, wordMap);
@@ -62,6 +63,7 @@ public class Multilevel
 	{
 		File base = new File(folderPath+"/"+level);
 		File[] listOfFiles = base.listFiles();
+		String basePath=folderPath+"/"+level;
 		if(listOfFiles.length>1)
 		{
 			int pageCount=1,wordCount=0;
@@ -73,9 +75,9 @@ public class Multilevel
 			{
 				BufferedWriter bw=new BufferedWriter(new FileWriter(new File(folderPath+"/"+level+"/"+pageCount+".txt")));
 				Map<Integer,String> wordMap=new TreeMap<Integer,String>();
-				for(File f:listOfFiles)
+				for(int i=1;i<=listOfFiles.length;i++)
 				{
-					BufferedReader br=new BufferedReader(new FileReader(f));
+					BufferedReader br=new BufferedReader(new FileReader(new File(basePath+"/"+i+".txt")));
 					String line,lastLine="";
 					while((line = br.readLine()) != null)
 					{
@@ -91,7 +93,7 @@ public class Multilevel
 						bw=new BufferedWriter(new FileWriter(new File(folderPath+"/"+level+"/"+pageCount+".txt")));
 						wordCount=0;
 					}
-					wordMap.put(Integer.parseInt(lastLine.split(":")[0]), f.getName());
+					wordMap.put(Integer.parseInt(lastLine.split(":")[0]), i+".txt");
 					wordCount++;
 				}
 				writeMapDoc(bw, wordMap);
