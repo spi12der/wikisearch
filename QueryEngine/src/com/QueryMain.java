@@ -24,12 +24,12 @@ public class QueryMain
 	public static void main(String[] args) 
 	{
 		//String query="#ashwin#";
-		indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
+		/*indexPath="/home/rohit/IIIT/Sem3/IRE/Index";
 		highLevel='B';
-		docLevel='B';
-		/*indexPath=args[0];
+		docLevel='B';*/
+		indexPath=args[0];
 		highLevel=args[1].charAt(0);
-		docLevel=args[2].charAt(0);*/
+		docLevel=args[2].charAt(0);
 		Scanner sc=new Scanner(System.in);
 		String query=sc.nextLine();
 		sc.close();
